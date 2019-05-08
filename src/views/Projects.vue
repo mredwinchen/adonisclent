@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-layout>
       <v-flex xs4 mr-4>
           <Projects></Projects>
@@ -12,11 +12,23 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Projects from '@/components/Projects.vue';
+import router from '../router';
 
 export default {
   components: {
     Projects,
+  },
+  mounted() {
+    if (!this.isLoggedIn) {
+      return router.push('/login');
+    }
+  },
+  computed: {
+    ...mapGetters('authentication', [
+      'isLoggedIn',
+    ]),
   },
 };
 </script>
