@@ -7,12 +7,29 @@ export default {
     registerEmail: 'mredwinchenv1@gmail.com',
     registerPassword: '1234567890',
     registerError: null,
+    loginEmail: 'mredwinchenv1@gmail.com',
+    loginPassword: '1234567890',
+    loginError: null,
     token: null,
   },
   actions: {
     logout({ commit }) {
       commit('setToken', null);
       router.push('/login');
+    },
+    login({ commit, state }) {
+      commit('setLoginError', null);
+      return HTTP().post('/auth/login', {
+        email: state.loginEmail,
+        password: state.loginPassword,
+      })
+        .then(({ data }) => {
+          commit('setToken', data.token);
+          router.push('/');
+        })
+        .catch(() => {
+          commit('setLoginError', 'An error has occured trying to create your account.');
+        });
     },
     register({ commit, state }) {
       commit('setRegisterError', null);
@@ -25,7 +42,7 @@ export default {
           router.push('/');
         })
         .catch(() => {
-          commit('setRegisterError', 'An error has occured trying to create your account.');
+          commit('setRegisterError', 'An error has occured trying to login.');
         });
     },
   },
@@ -37,6 +54,15 @@ export default {
   mutations: {
     setToken(state, token) {
       state.token = token;
+    },
+    setLoginError(state, error) {
+      state.loginError = error;
+    },
+    setLoginEmail(state, email) {
+      state.loginEmail = email;
+    },
+    setLoginPassword(state, password) {
+      state.loginPassword = password;
     },
     setRegisterError(state, error) {
       state.registerError = error;
