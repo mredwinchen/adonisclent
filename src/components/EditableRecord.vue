@@ -1,7 +1,7 @@
 <template>
   <v-layout>
     <v-flex xs9 class="text-xs-left">
-      <span v-if="!isEditMode">
+      <span @click="$emit('onClick')" v-if="!isEditMode">
         {{ title }}
       </span>
       <v-text-field

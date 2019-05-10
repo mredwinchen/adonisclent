@@ -4,21 +4,23 @@
       <v-flex xs4 mr-4>
           <Projects></Projects>
       </v-flex>
-      <v-flex xs8>
-          <Panel title="Tasks"></Panel>
+      <v-flex xs8 v-if="currentProject">
+          <Tasks></Tasks>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import Projects from '@/components/Projects.vue';
+import Tasks from '@/components/Tasks.vue';
 import router from '../router';
 
 export default {
   components: {
     Projects,
+    Tasks,
   },
   mounted() {
     if (!this.isLoggedIn) {
@@ -26,6 +28,9 @@ export default {
     }
   },
   computed: {
+    ...mapState('projects', [
+      'currentProject',
+    ]),
     ...mapGetters('authentication', [
       'isLoggedIn',
     ]),

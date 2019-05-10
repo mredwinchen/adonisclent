@@ -8,6 +8,7 @@
           project,
           title: $event,
         })"
+        @onClick='projectClicked(project)'
         @onEdit="setEditMode(project)"
         @onSave="saveProject(project)"
         @onDelete="deleteProject(project)"
@@ -41,17 +42,25 @@ export default {
     ]),
   },
   methods: {
+    projectClicked(project) {
+      this.setCurrentProject(project);
+      this.fetchTasksForCurrentProject(project);
+    },
     ...mapMutations('projects', [
       'setNewProjectsName',
       'setEditMode',
       'unsetEditMode',
       'setProjectTitle',
+      'setCurrentProject',
     ]),
     ...mapActions('projects', [
       'createProject',
       'fetchProject',
       'saveProject',
       'deleteProject',
+    ]),
+    ...mapActions('tasks', [
+      'fetchTasksForCurrentProject',
     ]),
   },
 };
